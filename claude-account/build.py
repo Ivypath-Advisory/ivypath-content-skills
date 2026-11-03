@@ -23,11 +23,11 @@ def split_front(text):
 def loader(directory, read_first):
     return f"""> **Claude 账号版 · 运行时加载**（{VERSION} 版）
 >
-> 完整规则只在私有仓库 `{REPO}`（main 分支）的 `{directory}/` 目录维护。下文出现的 `references/` 路径指仓库里 `{directory}/` 下的文件，`scripts/zh_lint.py` 指仓库根目录的检查脚本。Dropbox 市场库里的旧 `.skill` 包（2026-07 至 08 月版）已停止维护，不要读取。
+> 完整规则只在私有仓库 `{REPO}`（main 分支）的 `{directory}/` 目录维护。下文的路径都是仓库路径：没写 skill 名的 `references/…` 指 `{directory}/references/`，写了 `case-story-writer` 的指 `case-story-writer/references/`，`scripts/zh_lint.py` 指仓库根目录的检查脚本。Dropbox 市场库里的旧 `.skill` 包（2026-07 至 08 月版）已停止维护，不要读取。
 >
-> **开工先加载完整版**：用当前会话可用的方式读 {read_first}，再按其中的参考文件表只读本次任务需要的文件。Claude Code 会话：add_repo 挂上 `{REPO}` 后读本地克隆；有 gh 时：`gh api repos/{REPO}/contents/<路径> --jq .content | base64 -d`；有 GitHub 连接器时用连接器。同一会话读过就不重读。仓库版与本文件不一致时以仓库版为准。
+> **开工先加载完整版**：用当前会话可用的方式读 {read_first}，再只读其中引用、本次任务需要的文件。Claude Code 会话：add_repo 挂上 `{REPO}` 后读本地克隆；有 gh 时：`gh api repos/{REPO}/contents/<路径> --jq .content | base64 -d`；有 GitHub 连接器时用连接器。同一会话读过就不重读。仓库版与本文件不一致时以仓库版为准。
 >
-> **读不到仓库时**：用一句话告诉用户「没读到 GitHub 上的完整规则，这次按 Claude 账号里的核心规则执行」，然后按下文执行（文末「离线核心规则」补足读不到的参考文件），不凭记忆补规则。改规则一律先改 GitHub（见仓库 AGENTS.md），再重新生成本文件。
+> **读不到仓库时**：用一句话告诉用户「没读到 GitHub 上的完整规则，这次按 Claude 账号里的核心规则执行」，然后按下文执行（文末「离线核心规则」补足读不到的文件），不凭记忆补规则。改规则一律先改 GitHub（见仓库 AGENTS.md），再重新生成本文件。
 """
 
 

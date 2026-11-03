@@ -9,22 +9,17 @@
 - 匹配层级：L1 同本科 + 同录取项目 → L2 同本科 + 同白皮书方向 → L3 同类院校（UC 系；罗格斯 / UConn / 石溪；布兰迪斯 / 雪城；NYU / NYU Shanghai）+ 同项目或方向 → L4 任意本科 + 同项目。
 - 打分：最终去向在本方向 +3；录了白皮书 05 节项目 +2；2025 季及以后 +2，2023–2024 季 +1；PH 正文 ≥3,000 字 +1；有 GPA +1；本方向录取每个 +0.5（最多 +1.5）。
 
-### 检查脚本（仓库脚本不可用时临时用）
+### 检查（仓库脚本不可用时）
+
+读不到仓库里的 `scripts/zh_lint.py` 时不要临时拼一个简化脚本，按 case-story-writer 账号版「离线核心规则」的句式限额和禁用语人工计数，查重用下面这个函数（与仓库脚本同口径的最小版本），批改报告里写明「未跑 zh_lint，人工计数」。
 
 ```python
 import re
-PAT = {"不是…而是": r"(?:不是|并非|并不是|不只是|不仅是|不在于|与其说)[^。！？\n]{0,30}?(?:而是|更是|而在于|不如说)",
-       "真正": r"真正", "破折号": r"——|—"}
-CAP = {"不是…而是": 1, "真正": 1, "破折号": 1}  # 每篇；引号内原话不计
-QUOTE = r"“[^”\n]*”|「[^」\n]*」"
-BANNED = r"保证|包过|保录|100%录取|最强|包装背景|走捷径|内部资源|赋能|打造|全方位|深耕|助力|保驾护航|至关重要|闭环"
-
-def counts(t):
-    e = re.sub(QUOTE, "", t)
-    return {k: len(re.findall(v, e)) for k, v in PAT.items()}
 
 def overlap(src, draft, n=12):
-    a, b = re.sub(r"\s+", "", src), re.sub(r"\s+", "", draft)
+    squash = lambda s: re.sub(r"\s+", "", s)
+    school = r"[\u4e00-\u9fff]{2,12}(?:大学|学院|分校)"
+    a, b = re.sub(school, "⊙", squash(src)), re.sub(school, "⊙", squash(draft))
     grams = {a[i:i + n] for i in range(len(a) - n + 1)}
     hits, i = [], 0
     while i <= len(b) - n:
@@ -35,5 +30,5 @@ def overlap(src, draft, n=12):
             hits.append(b[i:j]); i = j
         else:
             i += 1
-    return hits  # 只允许校名 / 项目名 / 数字类专有名词
+    return [h for h in hits if re.search(r"[\u4e00-\u9fff]{6,}", h)]  # 只剩英文名和数字的重合不算
 ```

@@ -5,11 +5,11 @@ description: "IvyPath 市场实习生案例模仿训练：按本科学校、专�
 
 > **Claude 账号版 · 运行时加载**（2026-11-03 版）
 >
-> 完整规则只在私有仓库 `Ivypath-Advisory/ivypath-content-skills`（main 分支）的 `ivypath-case-imitation-training/` 目录维护。下文出现的 `references/` 路径指仓库里 `ivypath-case-imitation-training/` 下的文件，`scripts/zh_lint.py` 指仓库根目录的检查脚本。Dropbox 市场库里的旧 `.skill` 包（2026-07 至 08 月版）已停止维护，不要读取。
+> 完整规则只在私有仓库 `Ivypath-Advisory/ivypath-content-skills`（main 分支）的 `ivypath-case-imitation-training/` 目录维护。下文的路径都是仓库路径：没写 skill 名的 `references/…` 指 `ivypath-case-imitation-training/references/`，写了 `case-story-writer` 的指 `case-story-writer/references/`，`scripts/zh_lint.py` 指仓库根目录的检查脚本。Dropbox 市场库里的旧 `.skill` 包（2026-07 至 08 月版）已停止维护，不要读取。
 >
-> **开工先加载完整版**：用当前会话可用的方式读 `ivypath-case-imitation-training/SKILL.md` 与 `case-story-writer/references/reference-cases.md`，再按其中的参考文件表只读本次任务需要的文件。Claude Code 会话：add_repo 挂上 `Ivypath-Advisory/ivypath-content-skills` 后读本地克隆；有 gh 时：`gh api repos/Ivypath-Advisory/ivypath-content-skills/contents/<路径> --jq .content | base64 -d`；有 GitHub 连接器时用连接器。同一会话读过就不重读。仓库版与本文件不一致时以仓库版为准。
+> **开工先加载完整版**：用当前会话可用的方式读 `ivypath-case-imitation-training/SKILL.md` 与 `case-story-writer/references/reference-cases.md`，再只读其中引用、本次任务需要的文件。Claude Code 会话：add_repo 挂上 `Ivypath-Advisory/ivypath-content-skills` 后读本地克隆；有 gh 时：`gh api repos/Ivypath-Advisory/ivypath-content-skills/contents/<路径> --jq .content | base64 -d`；有 GitHub 连接器时用连接器。同一会话读过就不重读。仓库版与本文件不一致时以仓库版为准。
 >
-> **读不到仓库时**：用一句话告诉用户「没读到 GitHub 上的完整规则，这次按 Claude 账号里的核心规则执行」，然后按下文执行（文末「离线核心规则」补足读不到的参考文件），不凭记忆补规则。改规则一律先改 GitHub（见仓库 AGENTS.md），再重新生成本文件。
+> **读不到仓库时**：用一句话告诉用户「没读到 GitHub 上的完整规则，这次按 Claude 账号里的核心规则执行」，然后按下文执行（文末「离线核心规则」补足读不到的文件），不凭记忆补规则。改规则一律先改 GitHub（见仓库 AGENTS.md），再重新生成本文件。
 
 # IvyPath 案例模仿训练（市场实习生）
 
@@ -39,13 +39,13 @@ description: "IvyPath 市场实习生案例模仿训练：按本科学校、专�
 
 1. **授权分级决定能不能上线**：A 授权清单、B 本团队经手可以进上线流程（B 级按改稿模式，清柚原文和图片一张不用）；C 仅培训，页眉写「培训样稿｜改编自外部公开案例｜不得发布」，不进任何对外渠道，不能说成 IvyPath 学员。分级细则见 reference-cases.md。
 2. **竞品句子一律不搬**：要上线的稿和原文跑 12 字滑窗查重，命中只能是校名、项目名、数字。
-3. **事实不加不改**：GPA、标化、录取学校与项目、奖学金、时间以原文或资料卡为准；课号只能来自官网课程页，查不到就写【待补：课号，需查官网】。没有的写【待补】，不编。
+3. **事实不加不改**：GPA、标化、录取学校与项目、奖学金、时间以原文或资料卡为准；课号按 house-style.md 的出处规则，训练稿一般只能查官网课程页，查不到就写【待补：课号，需查官网】。没有的写【待补】，不编。
 4. **隐私**：学员称「姓的英文首字母 + 同学」；不出现真名、学号、邮箱、电话、可识别的人脸；offer 图必须打码。清柚数据表含真名，只在本地 Excel 里用。
-5. **合规**：禁用「保证、包过、保录、100%录取、最强、第一（第一类 / 第一次等序数除外）、包装背景、走捷径、内部资源」；改写稿里不出现竞品机构名和竞品老师名（A / B 级改成「我们」和角色名，C 级改成「机构」）；A / B 级上线稿页脚保留「本文源自 IvyPath 学员真实申请案例。未经许可，请勿转载。」
+5. **合规**：禁用语按 case-story-writer `references/quality-check.md` 第二节（zh_lint 同口径）；改写稿里不出现竞品机构名和竞品老师名（A / B 级改成「我们」和角色名，C 级改成「机构」）；A / B 级上线稿页脚保留「本文源自 IvyPath 学员真实申请案例。未经许可，请勿转载。」
 
 ## 三、第一步：选模仿案例
 
-**输入**（任意组合）：本科学校、本科专业、目标或已录取的项目（或白皮书方向 WP01–WP08）、用途（培训 / 上线）、要几篇。
+**输入**（任意组合）：本科学校、本科专业、目标或已录取的项目（或白皮书方向）、用途（培训 / 上线）、要几篇。
 
 按 reference-cases.md 的匹配层级 L1–L4 和打分排序筛，输出 3–5 条选案卡。学写法优先选 PH（对应我们的 B体）；常青藤、2025 下半年以后的拓达只当反面示例；用途为「上线」时只出 A / B 级。用户在场就请他挑；没人回复就取第一名继续，并在交付时写明。
 
@@ -57,11 +57,11 @@ description: "IvyPath 市场实习生案例模仿训练：按本科学校、专�
 2. **原文拆解表**：原文逐段写出它的职责（导语 / 资料卡 / 动机 / 难点 / 选校 / 背景提升 / 文书 / 推荐信 / 面试 / 结果 / 寄语 / 广告），对应到我们的格式（官网长页按 web-page.md 分节；B体按 structures.md 的 Q1–Q7），标「保留 / 改写 / 删除」和原因。原文的三层选校、结尾金句一律标「删除」，并在原因里写出为什么（循环论证、模板味）。
 3. **初改稿**：按 case-story-writer 写。
    - 默认出官网长页（D体）；原文是学员访谈、要练批量篇时出 B体。
-   - 选校段只挖最终去向那一个项目，课号和课程内容去官网查，出处写在批注里。
+   - 选校段按 house-style.md 只挖一所（最好那枚 offer，通常也是最终去向），课号和课程内容去官网查，出处写在批注里。
    - 结尾按 house-style.md 四步收住，不写金句。
-   - 学员原话里的口语和英文夹杂（其实、感觉、offer、mock、AO）照留。
-   - 句式限额按 house-style.md：「不是…而是」每篇 ≤1 且只在加粗理念句，「真正」≤1，破折号 ≤1。
-   - 信息下限按 structures.md B 节：一个没录上或主动放弃的项目和原因、一个犹豫过的决定、具名角色加上具体动作、至少一个数字，外加两处「我们做了什么」。
+   - 学员原话里的口语和英文夹杂（其实、感觉、offer、mock、AO）照留；B体的学员答问用 `::: 原话` 包起来。
+   - 句式限额和豁免按 house-style.md「D体的去AI味特例」，用 zh_lint 计数。
+   - 信息下限：官网长页按 web-page.md 分节表和 SKILL.md 固定模块；B体再加 structures.md B 节的每篇硬性下限。
    - 竞品机构名和老师名按授权等级替换；C 级保留原学员化名，同时加页眉水印。
    - **批注**：在 Word 批注里写「为什么这么改」，8–12 条，结构、事实、口吻、去 AI 味、合规、隐私各至少 1 条。
 4. **练习任务**：给实习生 3–5 个可以检查的任务，例如：
@@ -125,22 +125,17 @@ description: "IvyPath 市场实习生案例模仿训练：按本科学校、专�
 - 匹配层级：L1 同本科 + 同录取项目 → L2 同本科 + 同白皮书方向 → L3 同类院校（UC 系；罗格斯 / UConn / 石溪；布兰迪斯 / 雪城；NYU / NYU Shanghai）+ 同项目或方向 → L4 任意本科 + 同项目。
 - 打分：最终去向在本方向 +3；录了白皮书 05 节项目 +2；2025 季及以后 +2，2023–2024 季 +1；PH 正文 ≥3,000 字 +1；有 GPA +1；本方向录取每个 +0.5（最多 +1.5）。
 
-### 检查脚本（仓库脚本不可用时临时用）
+### 检查（仓库脚本不可用时）
+
+读不到仓库里的 `scripts/zh_lint.py` 时不要临时拼一个简化脚本，按 case-story-writer 账号版「离线核心规则」的句式限额和禁用语人工计数，查重用下面这个函数（与仓库脚本同口径的最小版本），批改报告里写明「未跑 zh_lint，人工计数」。
 
 ```python
 import re
-PAT = {"不是…而是": r"(?:不是|并非|并不是|不只是|不仅是|不在于|与其说)[^。！？\n]{0,30}?(?:而是|更是|而在于|不如说)",
-       "真正": r"真正", "破折号": r"——|—"}
-CAP = {"不是…而是": 1, "真正": 1, "破折号": 1}  # 每篇；引号内原话不计
-QUOTE = r"“[^”\n]*”|「[^」\n]*」"
-BANNED = r"保证|包过|保录|100%录取|最强|包装背景|走捷径|内部资源|赋能|打造|全方位|深耕|助力|保驾护航|至关重要|闭环"
-
-def counts(t):
-    e = re.sub(QUOTE, "", t)
-    return {k: len(re.findall(v, e)) for k, v in PAT.items()}
 
 def overlap(src, draft, n=12):
-    a, b = re.sub(r"\s+", "", src), re.sub(r"\s+", "", draft)
+    squash = lambda s: re.sub(r"\s+", "", s)
+    school = r"[\u4e00-\u9fff]{2,12}(?:大学|学院|分校)"
+    a, b = re.sub(school, "⊙", squash(src)), re.sub(school, "⊙", squash(draft))
     grams = {a[i:i + n] for i in range(len(a) - n + 1)}
     hits, i = [], 0
     while i <= len(b) - n:
@@ -151,5 +146,5 @@ def overlap(src, draft, n=12):
             hits.append(b[i:j]); i = j
         else:
             i += 1
-    return hits  # 只允许校名 / 项目名 / 数字类专有名词
+    return [h for h in hits if re.search(r"[\u4e00-\u9fff]{6,}", h)]  # 只剩英文名和数字的重合不算
 ```

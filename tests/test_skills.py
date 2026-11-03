@@ -80,6 +80,69 @@ class LintTests(unittest.TestCase):
         self.assertEqual(len(r['privacy']), 2)
         self.assertIn('保录', r['compliance'])
 
+    def test_protected_sentence_with_she(self):
+        protect = lint.protected_sentences()
+        t = '以耶鲁为例。' + lint.norm_punct(protect[0]).replace('他', '她')
+        r = lint.lint(t, 'case', protect=protect)
+        self.assertEqual(r['patterns']['真正']['count'], 0)
+
+    def test_raw_block_and_blockquote_are_excluded(self):
+        t = ('::: 原话\n其实我真正担心的不是分数，而是方向。\n:::\n'
+             '> 我真正想去的是纽约。\n'
+             '我们先把课表过了一遍。')
+        r = lint.lint(t, 'case')
+        self.assertEqual(r['patterns']['不是…而是']['count'], 0)
+        self.assertEqual(r['patterns']['真正']['count'], 0)
+
+    def test_dash_exclusions(self):
+        t = '2023—2024 申请季，他在 Rutgers—New Brunswick 选了 E6873—E6875。\n“我想去纽约。”\n——Z同学'
+        r = lint.lint(t, 'case')
+        self.assertEqual(r['patterns']['破折号']['count'], 0)
+        r = lint.lint('答案很简单——专注。', 'case')
+        self.assertEqual(r['patterns']['破折号']['count'], 1)
+
+    def test_more_reversal_forms(self):
+        for s in ('他选了哥大，而不是宾大。', '这不是运气，是准备。', '关键不在于分数，在于主线。',
+                  '有些申请的意义，不只是抵达一所学校。而是让热爱被看见。'):
+            self.assertEqual(lint.lint(s, 'case')['patterns']['不是…而是']['count'], 1, s)
+        self.assertEqual(lint.lint('他是不是该再考一次，是个问题。', 'case')['patterns']['不是…而是']['count'], 0)
+
+    def test_tier_words_in_one_line(self):
+        r = lint.lint('冲刺：哥大、康奈尔；匹配：NYU、BU；保底：雪城', 'case')
+        self.assertTrue(r['three_tier_school_list'])
+        r = lint.lint('兴趣匹配度最高的是哥大，我们建议他冲刺。', 'case')
+        self.assertFalse(r['three_tier_school_list'])
+
+    def test_ending_zone_starts_at_closing(self):
+        body = '**招生官要的不是热情，而是证据。**\n' + '他补了一段实习。\n' * 30
+        end = '整个申请过程中，我们看到的是一个真诚的学生。我们也祝愿他在哥大的学习一切顺利。\n预约一次评估'
+        r = lint.lint(body + end, 'case')
+        self.assertFalse(r['aphorism_ending'])
+        self.assertEqual(r['patterns']['不是…而是']['in_bold'], 1)
+        r = lint.lint(body + '整个申请过程中，我们看到的是一个真诚的学生。这就是申请的意义。愿每一个认真的你，都被看见。', 'case')
+        self.assertTrue(r['aphorism_ending'])
+
+    def test_dates_and_urls_are_not_privacy(self):
+        r = lint.lint('发布信息：20261103_案例文_Z同学；课号出处 https://bulletin.example.edu/courses/123456789', 'case')
+        self.assertEqual(r['privacy'], [])
+
+    def test_overlap_allow_list_and_school_names(self):
+        src = '最后去了加州大学圣地亚哥分校数据科学硕士项目，那一刻她在宿舍里哭了很久很久。'
+        draft = '她去了加州大学圣地亚哥分校数据科学硕士项目。'
+        self.assertEqual(lint.overlap(src, draft), [])
+
+    def test_docx_skips_deleted_text(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'r.docx'
+            xml = ('<w:document><w:body><w:p><w:r><w:t>他先后收到了三份录取 &amp; 一封拒信。</w:t></w:r>'
+                   '<w:del><w:r><w:delText>这不是终点，而是起点。</w:delText></w:r></w:del></w:p></w:body></w:document>')
+            with zipfile.ZipFile(path, 'w') as z:
+                z.writestr('word/document.xml', xml)
+            text = lint.read_text(path)
+            self.assertIn('& 一封拒信', text)
+            self.assertNotIn('终点', text)
+
     def test_cli_exit_codes(self):
         with tempfile.TemporaryDirectory() as d:
             ok, bad = Path(d) / 'ok.md', Path(d) / 'bad.md'
@@ -105,6 +168,9 @@ class ConsistencyTests(unittest.TestCase):
         (r'05 三层选校', '长页 05 节已改为课号深挖'),
         (r'≤0\.5', '句式限额已从每万字改为每篇计数'),
         (r'答案不在于\{', '摘要公式已去掉翻案句'),
+        (r'并不只是____', 'D体段2改为正面陈述'),
+        (r'第一个offer详写', '放榜段按结尾四步，一句列完'),
+        (r'八个标题公式', '标题公式是九个'),
     ]
 
     def test_no_stale_rules(self):
