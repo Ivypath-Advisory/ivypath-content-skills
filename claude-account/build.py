@@ -21,9 +21,13 @@ def split_front(text):
 
 
 def loader(directory, read_first):
+    if directory == 'case-story-writer':
+        paths = '`references/…` 指 `case-story-writer/references/`，'
+    else:
+        paths = '写了 `case-story-writer` 的 `references/…` 指 `case-story-writer/references/`，'
     return f"""> **Claude 账号版 · 运行时加载**（{VERSION} 版）
 >
-> 完整规则只在私有仓库 `{REPO}`（main 分支）的 `{directory}/` 目录维护。下文的路径都是仓库路径：没写 skill 名的 `references/…` 指 `{directory}/references/`，写了 `case-story-writer` 的指 `case-story-writer/references/`，`scripts/zh_lint.py` 指仓库根目录的检查脚本。Dropbox 市场库里的旧 `.skill` 包（2026-07 至 08 月版）已停止维护，不要读取。
+> 完整规则只在私有仓库 `{REPO}`（main 分支）的 `{directory}/` 目录维护。下文的路径都是仓库路径：{paths}`scripts/zh_lint.py` 指仓库根目录的检查脚本。Dropbox 市场库里的旧 `.skill` 包（2026-07 至 08 月版）已停止维护，不要读取。
 >
 > **开工先加载完整版**：用当前会话可用的方式读 {read_first}，再只读其中引用、本次任务需要的文件。Claude Code 会话：add_repo 挂上 `{REPO}` 后读本地克隆；有 gh 时：`gh api repos/{REPO}/contents/<路径> --jq .content | base64 -d`；有 GitHub 连接器时用连接器。同一会话读过就不重读。仓库版与本文件不一致时以仓库版为准。
 >
