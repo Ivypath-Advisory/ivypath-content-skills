@@ -9,7 +9,7 @@
       "references/intake-form.md": "42704e94d245521c9cb5746b1006fa8c7869badc379234b1581af45e02b193c7",
       "references/learned-style.md": "073f92534e800d4b41416f2103c7da5dc7b846cea7b334426056a1067fc20a40",
       "references/quality-check.md": "5f67a40aca24368abc24da61d469331e7efdfecbcae355acd710fbf96701b70d",
-      "references/reference-cases.md": "e1e131a33cc750a515151474b3038848a8a58618665c2ff11a5e9797d3fe23ea",
+      "references/reference-cases.md": "98830a4ae44ce0200a2de7ecfa8fa3045ec5cb4a5b502ff52be0b2ac650aeb4e",
       "references/rewrite-mode.md": "3b9f7ae23a55c22f89f3e42ba9ced6adadc6fc747f9565ee9560fdfb171126ff",
       "references/service-trust.md": "c651029418a917a5a33db8512d4374fa288403649fb3484af6900a48743ac7c3",
       "references/structures.md": "de78059c6a14a78887f7adec3bf62e93939b28f7368f9a3f1147e2ab41c80999",
@@ -26,7 +26,7 @@
   "claude_account": {
     "case-story-writer": "eb95112e4835c5b121497cb0f9e6f4743c1ee99ca8f3081a22b1a450939a1720",
     "ivypath-humanize-zh": "e1bb21777b5c2c7dc305e2d22e6f8e71942f73aec07b997b405a5e86df3967c1",
-    "ivypath-case-imitation-training": "9585fcbd1910a541d6bef49f7dcc52cf6fa9766682aea2c0e89e1a5a17a1012d"
+    "ivypath-case-imitation-training": "a85690063a3940c4cd4ca4d1647b3cb9a9aa7c23c8c015127b6892e3e1709f6d"
   },
   "shared": {
     "scripts/zh_lint.py": "008194eedbc3ea6a5ca2a64edcae735076b366290474aec87b8086b1c145ba23"

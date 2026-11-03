@@ -206,6 +206,7 @@ class ConsistencyTests(unittest.TestCase):
         (r'信息要密', '标题改为一个钩子，数字放副题'),
         (r'先问用户挖哪', '最好的 offer 不是最终去向时写录取后的项目权衡'),
         (r'列一份学校名单并不难', '选校收句每篇更换，固定句已撤下'),
+        (r'PH素材库/', 'Dropbox 文件夹 2026-11-03 已改名为「竞品案例库」'),
     ]
 
     def test_no_stale_rules(self):
