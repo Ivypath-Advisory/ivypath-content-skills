@@ -165,8 +165,8 @@ class LintTests(unittest.TestCase):
         self.assertTrue(bad['title_issues'])
         self.assertTrue(bad['title_colon'])
         self.assertTrue(bad['fail'])
-        hype = lint.lint('# 罗格斯学姐申8中8，斩获哥大！\n\n正文。', 'case')
-        self.assertGreaterEqual(len(hype['title_issues']), 2)
+        hype = lint.lint('# 罗格斯学姐8申8中，狂揽3.5万美金奖学金\n\n正文。', 'case')
+        self.assertEqual(hype['title_issues'], [])  # 2026-11-03 起允许
         ok = lint.lint('# 7 个录取，耶鲁是最后到的\n\n他先后收到了七份录取。', 'case')
         self.assertEqual(ok['title_issues'], [])
         self.assertFalse(ok['title_colon'])
