@@ -4,17 +4,17 @@
   "skills": {
     "case-story-writer": {
       "SKILL.md": "449efcd1169f28fc6d36a1fccc98e7c9df515675f91abf97954b2cb831152b87",
-      "references/house-style.md": "017f6abd03228f2d00775e4f664d0f6941ad7231f9f09faae7d5fa52f28d5b30",
+      "references/house-style.md": "485d3f2c71bb097334ef046408173c455fee00cb628b29701ef1fa799026973c",
       "references/images.md": "962316cc93a6bd61616f907425798cc9c86436f63f18820513dd6f7127f01cbf",
       "references/intake-form.md": "42704e94d245521c9cb5746b1006fa8c7869badc379234b1581af45e02b193c7",
-      "references/learned-style.md": "073f92534e800d4b41416f2103c7da5dc7b846cea7b334426056a1067fc20a40",
-      "references/quality-check.md": "5f67a40aca24368abc24da61d469331e7efdfecbcae355acd710fbf96701b70d",
+      "references/learned-style.md": "15938c75e96f879aff47b233467f1070c68484bf158ea96308942a5111c58925",
+      "references/quality-check.md": "8e364e36f42033a695dc255821b477cd27a2aa62275de8ef4e8de101957b56b4",
       "references/reference-cases.md": "98830a4ae44ce0200a2de7ecfa8fa3045ec5cb4a5b502ff52be0b2ac650aeb4e",
       "references/rewrite-mode.md": "3b9f7ae23a55c22f89f3e42ba9ced6adadc6fc747f9565ee9560fdfb171126ff",
       "references/service-trust.md": "c651029418a917a5a33db8512d4374fa288403649fb3484af6900a48743ac7c3",
-      "references/structures.md": "de78059c6a14a78887f7adec3bf62e93939b28f7368f9a3f1147e2ab41c80999",
+      "references/structures.md": "67152d68bdc528ed17932c6929f12573d2c2735c6757524029d98e89589814b8",
       "references/titles-hooks.md": "6b0b00f89080224230d66eaea62f1cc27a1cbb02d34cbe5c3397f6de8becb46b",
-      "references/web-page.md": "aeaaed10b3207f0635cba2823bf455ef5d22b079561e1a67ada0404454a05840"
+      "references/web-page.md": "5d71f23d9f6f842d245b473999fc84e1dddd8089c7886a38f0820e06dda685a2"
     },
     "ivypath-humanize-zh": {
       "SKILL.md": "c07a01214af175d1b47c9aa17cb004d8b59d232669b85fe2535779c90e6c3e47"
@@ -24,11 +24,11 @@
     }
   },
   "claude_account": {
-    "case-story-writer": "eb95112e4835c5b121497cb0f9e6f4743c1ee99ca8f3081a22b1a450939a1720",
+    "case-story-writer": "9eccf5ebdb60a3003f524b0d65673696fd8787c82a3fad0568d3e7f05959a4e8",
     "ivypath-humanize-zh": "e1bb21777b5c2c7dc305e2d22e6f8e71942f73aec07b997b405a5e86df3967c1",
     "ivypath-case-imitation-training": "a85690063a3940c4cd4ca4d1647b3cb9a9aa7c23c8c015127b6892e3e1709f6d"
   },
   "shared": {
-    "scripts/zh_lint.py": "008194eedbc3ea6a5ca2a64edcae735076b366290474aec87b8086b1c145ba23"
+    "scripts/zh_lint.py": "682c6500110f7083e1079e83229ec0ffd0d061c6b18ef272b4616b4418d2c899"
   }
 }

@@ -63,7 +63,8 @@ APHORISM = (r'有些[^。\n]{0,12}的意义|的意义[^。\n]{0,12}(?:不只是|
 ENDING_START = r'整个申请过程中|我们看到的是一个|祝愿'
 ENDING_STOP = r'预约|扫码|本文源自|查看更多案例'
 # 标题禁用写法，与 titles-hooks.md「硬规则」同口径
-TITLE_BAD = r'这一课|被看见|如何被|之路|破局|密码|答案|也能'  # 「N申N中」与狂揽、斩获类动词 2026-11-03 起允许
+TITLE_BAD = r'这一课|被看见|如何被|之路|破局|密码|答案|也能'
+SECTION_LABEL = r'^(?:#{2,4}\s*(?:\d{2}\s*)?|\d{2}\s+)([\u4e00-\u9fff]{2,7})[：:]\s*\S.*$'  # 「01 起点：…」「## 文书：…」2026-11-03 起不用  # 「N申N中」与狂揽、斩获类动词 2026-11-03 起允许
 QUOTE = r'“[^”\n]*”|「[^」\n]*」|"[^"\n]*"'
 RAW_BLOCK = r'^:::\s*原话\s*$.*?^:::\s*$'          # B体原话区
 BLOCKQUOTE = r'^>.*$'
@@ -221,6 +222,7 @@ def lint(text, genre='case', src_texts=(), protect=(), n=12, allow=()):
         report['title'] = title
         report['title_issues'] = title_check(title)
         report['title_colon'] = bool(re.search(r'[：:]', title))
+        report['section_labels'] = [m.group(0).lstrip('# ').strip() for m in re.finditer(SECTION_LABEL, text, re.M)]
     hits = []
     for s in src_texts:
         hits += overlap(s, text, n, allow)
@@ -228,7 +230,7 @@ def lint(text, genre='case', src_texts=(), protect=(), n=12, allow=()):
     report['overlap_n'] = n
     report['fail'] = bool(over or report['compliance'] or report['privacy'] or hits or limited
                           or report.get('three_tier_school_list') or report.get('aphorism_ending')
-                          or report.get('title_issues'))
+                          or report.get('title_issues') or report.get('section_labels'))
     return report
 
 
@@ -240,7 +242,7 @@ def show(r):
         ex = ('；例：' + ' / '.join(v['examples'][:3])) if v['examples'] else ''
         bold = f"，其中加粗理念句里 {v['in_bold']} 次" if v.get('in_bold') is not None and v['count'] else ''
         lines.append(f"· {k}：{v['count']} 次{bold}（每万字 {v['per_10k']}，PH 基线 {v['ph_baseline_per_10k']}），{cap}{flag}{ex}")
-    for key, label in (('title_issues', '标题禁用写法'), ('three_tier_school_list', '三层选校写法'), ('aphorism_ending', '结尾金句句式'),
+    for key, label in (('title_issues', '标题禁用写法'), ('section_labels', '小标题写成「栏目名：」（house-style.md「小标题」）'), ('three_tier_school_list', '三层选校写法'), ('aphorism_ending', '结尾金句句式'),
                        ('compliance', '合规禁用语'), ('ai_words', 'AI 高频 / 空心词'), ('self_praise', '自夸形容词'),
                        ('privacy', '隐私（邮箱 / 手机 / 长数字）'), ('overlap', '与参考文连续重合')):
         if key in r and r[key]:

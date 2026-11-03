@@ -172,6 +172,13 @@ class LintTests(unittest.TestCase):
         self.assertFalse(ok['title_colon'])
         self.assertFalse(ok['fail'])
 
+    def test_section_label_headings(self):
+        bad = lint.lint('# 7 个录取，耶鲁是最后到的\n\n### 01 起点：和家人去纽约见顾问\n\n正文。\n\n## 文书：环保经历写成 ESG\n\n正文。', 'case')
+        self.assertEqual(len(bad['section_labels']), 2)
+        self.assertTrue(bad['fail'])
+        ok = lint.lint('# 7 个录取，耶鲁是最后到的\n\n### 01 选校名单上出现了耶鲁，她和家人都没想到\n\n**副题**：一句事实。\n\n### 02 没修过线代，申耶鲁是不是想多了？\n\n正文。', 'case')
+        self.assertEqual(ok['section_labels'], [])
+
     def test_cli_exit_codes(self):
         with tempfile.TemporaryDirectory() as d:
             ok, bad = Path(d) / 'ok.md', Path(d) / 'bad.md'
@@ -207,6 +214,7 @@ class ConsistencyTests(unittest.TestCase):
         (r'先问用户挖哪', '最好的 offer 不是最终去向时写录取后的项目权衡'),
         (r'列一份学校名单并不难', '选校收句每篇更换，固定句已撤下'),
         (r'PH素材库/', 'Dropbox 文件夹 2026-11-03 已改名为「竞品案例库」'),
+        (r'节名标签保留|节名标签.{0,4}保留|冒号后面那半句|冒号后半句按此写|写事实短语\(2026', '小标题不再写「节名：」，改写一句人话'),
     ]
 
     def test_no_stale_rules(self):
