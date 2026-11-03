@@ -42,10 +42,17 @@ class LintTests(unittest.TestCase):
         self.assertEqual(r['patterns']['真正']['count'], 0)
         self.assertGreater(r['quoted_chars_excluded'], 0)
 
+    PROTECT = '列一份学校名单并不难,难的是让学生真正明白每所学校为什么适合自己。'
+
+    def _protect_file(self, d):
+        f = Path(d) / 'protect.txt'
+        f.write_text(self.PROTECT, encoding='utf-8')
+        return lint.protected_sentences(f)
+
     def test_protected_sentence_is_skipped(self):
-        protect = lint.protected_sentences()
-        self.assertTrue(protect, '定稿保护句一节为空')
-        t = '以哥大为例。' + lint.norm_punct(protect[0])
+        with tempfile.TemporaryDirectory() as d:
+            protect = self._protect_file(d)
+        t = '以哥大为例。' + lint.norm_punct(protect[-1])
         r = lint.lint(t, 'case', protect=protect)
         self.assertEqual(r['patterns']['真正']['count'], 0)
         self.assertEqual(r['protected_removed'], 1)
@@ -81,8 +88,9 @@ class LintTests(unittest.TestCase):
         self.assertIn('保录', r['compliance'])
 
     def test_protected_sentence_with_she(self):
-        protect = lint.protected_sentences()
-        t = '以耶鲁为例。' + lint.norm_punct(protect[0]).replace('他', '她')
+        with tempfile.TemporaryDirectory() as d:
+            protect = self._protect_file(d)
+        t = '以耶鲁为例。他说' + lint.norm_punct(protect[-1]).replace('他', '她')
         r = lint.lint(t, 'case', protect=protect)
         self.assertEqual(r['patterns']['真正']['count'], 0)
 
@@ -95,7 +103,7 @@ class LintTests(unittest.TestCase):
         self.assertEqual(r['patterns']['真正']['count'], 0)
 
     def test_dash_exclusions(self):
-        t = '2023—2024 申请季，他在 Rutgers—New Brunswick 选了 E6873—E6875。\n“我想去纽约。”\n——Z同学'
+        t = '2023—2024 申请季，他在 Rutgers—New Brunswick 选了 E6873—E6875。\n“我想去纽约。”\n——Z同学\n他后来写：“先把课表看懂。”——Z同学'
         r = lint.lint(t, 'case')
         self.assertEqual(r['patterns']['破折号']['count'], 0)
         r = lint.lint('答案很简单——专注。', 'case')
@@ -121,6 +129,15 @@ class LintTests(unittest.TestCase):
         self.assertEqual(r['patterns']['不是…而是']['in_bold'], 1)
         r = lint.lint(body + '整个申请过程中，我们看到的是一个真诚的学生。这就是申请的意义。愿每一个认真的你，都被看见。', 'case')
         self.assertTrue(r['aphorism_ending'])
+
+    def test_student_quote_ending_passes(self):
+        body = '他补了一段实习。\n' * 30
+        end = ('整个申请过程中，我们看到的是一个真诚的学生。\n'
+               '他后来在问卷里写：“申请不是比谁经历多，而是看你能不能把一件事讲清楚。”——Z同学\n预约一次评估')
+        r = lint.lint(body + end, 'case')
+        self.assertFalse(r['aphorism_ending'], r['aphorism_ending'])
+        self.assertEqual(r['patterns']['破折号']['count'], 0)
+        self.assertFalse(r['fail'], lint.show(r))
 
     def test_dates_and_urls_are_not_privacy(self):
         r = lint.lint('发布信息：20261103_案例文_Z同学；课号出处 https://bulletin.example.edu/courses/123456789', 'case')
@@ -171,13 +188,15 @@ class ConsistencyTests(unittest.TestCase):
         (r'并不只是____', 'D体段2改为正面陈述'),
         (r'第一个offer详写', '放榜段按结尾四步，一句列完'),
         (r'八个标题公式', '标题公式是九个'),
+        (r'先问用户挖哪', '最好的 offer 不是最终去向时写录取后的项目权衡'),
+        (r'列一份学校名单并不难', '选校收句每篇更换，固定句已撤下'),
     ]
 
     def test_no_stale_rules(self):
         for p, text in skill_texts():
             for pat, why in self.STALE:
                 for line in text.splitlines():
-                    if re.search(pat, line) and not re.search(r'作废|废除|取代|旧公式|不做|不写|删除|README', line):
+                    if re.search(pat, line) and not re.search(r'作废|废除|取代|旧公式|不做|不写|删除|README|不再|撤下|没有沿用|\\bPROTECT\\b', line):
                         self.fail(f'{p.relative_to(ROOT)} 残留旧规则（{why}）：{line.strip()[:80]}')
 
     def test_reference_files_exist(self):

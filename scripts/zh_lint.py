@@ -165,6 +165,7 @@ def three_tier(text):
 
 def lint(text, genre='case', src_texts=(), protect=(), n=12, allow=()):
     body, n_protected = strip_protected(text, protect)
+    body = re.sub(r'(?<=[”」"])\s*——?\s*[^\s，。！？“”「」]{1,10}(?=\n|。|$)', '', body)  # 引号后的署名「”——X同学」不算破折号
     editorial, excluded = editorial_text(body)
     length = max(1, len(re.sub(r'\s+', '', text)))
     caps = CAPS[genre]
