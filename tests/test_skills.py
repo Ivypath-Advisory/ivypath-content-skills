@@ -160,6 +160,18 @@ class LintTests(unittest.TestCase):
             self.assertIn('& 一封拒信', text)
             self.assertNotIn('终点', text)
 
+    def test_title_rules(self):
+        bad = lint.lint('# 从一张成绩单到耶鲁：经济系学生如何被看见\n\n正文。', 'case')
+        self.assertTrue(bad['title_issues'])
+        self.assertTrue(bad['title_colon'])
+        self.assertTrue(bad['fail'])
+        hype = lint.lint('# 罗格斯学姐申8中8，斩获哥大！\n\n正文。', 'case')
+        self.assertGreaterEqual(len(hype['title_issues']), 2)
+        ok = lint.lint('# 7 个录取，耶鲁是最后到的\n\n他先后收到了七份录取。', 'case')
+        self.assertEqual(ok['title_issues'], [])
+        self.assertFalse(ok['title_colon'])
+        self.assertFalse(ok['fail'])
+
     def test_cli_exit_codes(self):
         with tempfile.TemporaryDirectory() as d:
             ok, bad = Path(d) / 'ok.md', Path(d) / 'bad.md'
@@ -187,7 +199,9 @@ class ConsistencyTests(unittest.TestCase):
         (r'答案不在于\{', '摘要公式已去掉翻案句'),
         (r'并不只是____', 'D体段2改为正面陈述'),
         (r'第一个offer详写', '放榜段按结尾四步，一句列完'),
-        (r'八个标题公式', '标题公式是九个'),
+        (r'八个标题公式|九个标题公式|标题公式\s*×\s*9', '标题改为 titles-hooks.md 的六种写法'),
+        (r'公式\s?9', 'D体主标题不再用命题式'),
+        (r'从\{起点意象\}', '标题与官网 H1 不再用从…到…命题式'),
         (r'先问用户挖哪', '最好的 offer 不是最终去向时写录取后的项目权衡'),
         (r'列一份学校名单并不难', '选校收句每篇更换，固定句已撤下'),
     ]

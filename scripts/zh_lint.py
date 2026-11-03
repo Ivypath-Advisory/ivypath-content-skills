@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""IvyPath 中文对外稿检查：句式限额、禁用词、隐私、查重、三层选校与金句结尾。
+"""IvyPath 中文对外稿检查：句式限额、禁用词、隐私、查重、三层选校、金句结尾与标题。
 
 用法：
   python3 scripts/zh_lint.py 稿件.md [--genre case|short|whitepaper|xhs|other]
@@ -11,7 +11,9 @@
   不计入句式限额，但照查禁用词和隐私。
 - 定稿保护句默认从 case-story-writer/references/learned-style.md 的「定稿保护句」一节读取，
   --protect 可再加一个文件（一行一句）。保护句不计入句式限额。
-- 有超限、禁用词、隐私命中或查重命中时退出码为 1。
+- 案例文与短页会检查标题行（第一个 `# ` 开头的行）：命题式、比喻、套话动词、「N申N中」，
+  与 case-story-writer/references/titles-hooks.md 同口径。
+- 有超限、禁用词、隐私命中、查重命中或标题禁用写法时退出码为 1。
 """
 import argparse
 import html
@@ -60,6 +62,9 @@ APHORISM = (r'有些[^。\n]{0,12}的意义|的意义[^。\n]{0,12}(?:不只是|
             r'|不代表[^。\n]{0,16}。?真正|真正要做的|愿每一个|被看见')
 ENDING_START = r'整个申请过程中|我们看到的是一个|祝愿'
 ENDING_STOP = r'预约|扫码|本文源自|查看更多案例'
+# 标题禁用写法，与 titles-hooks.md「硬规则」同口径
+TITLE_BAD = (r'这一课|被看见|如何被|之路|破局|密码|答案|斩获|收割|拿到手软|抛出?橄榄枝|圆梦|怒下|喜提|狂揽|霸气|大满贯'
+             r'|\d+\s*申\s*\d+\s*中|申\s*\d+\s*中\s*\d+|[一二三四五六七八九十]申[一二三四五六七八九十]中|申[一二三四五六七八九十]中[一二三四五六七八九十]')
 QUOTE = r'“[^”\n]*”|「[^」\n]*」|"[^"\n]*"'
 RAW_BLOCK = r'^:::\s*原话\s*$.*?^:::\s*$'          # B体原话区
 BLOCKQUOTE = r'^>.*$'
@@ -163,6 +168,20 @@ def three_tier(text):
     return hits
 
 
+def title_line(text):
+    m = re.search(r'^#\s+(.+)$', text, re.M)
+    return m.group(1).strip() if m else ''
+
+
+def title_check(title):
+    issues = list(dict.fromkeys(re.findall(TITLE_BAD, title)))
+    if re.search(PATTERNS['不是…而是'], title):
+        issues.append('翻案句')
+    if len(re.findall(r'[！!]', title)) > 1:
+        issues.append('感叹号超过一个')
+    return issues
+
+
 def lint(text, genre='case', src_texts=(), protect=(), n=12, allow=()):
     body, n_protected = strip_protected(text, protect)
     body = re.sub(r'(?<=[”」"])\s*——?\s*[^\s，。！？“”「」]{1,10}(?=\n|。|$)', '', body)  # 引号后的署名「”——X同学」不算破折号
@@ -199,13 +218,18 @@ def lint(text, genre='case', src_texts=(), protect=(), n=12, allow=()):
         tail = ending_zone(editorial)
         report['three_tier_school_list'] = three_tier(text)
         report['aphorism_ending'] = re.findall(APHORISM, tail) + re.findall(PATTERNS['不是…而是'], tail)
+        title = title_line(text)
+        report['title'] = title
+        report['title_issues'] = title_check(title)
+        report['title_colon'] = bool(re.search(r'[：:]', title))
     hits = []
     for s in src_texts:
         hits += overlap(s, text, n, allow)
     report['overlap'] = hits
     report['overlap_n'] = n
     report['fail'] = bool(over or report['compliance'] or report['privacy'] or hits or limited
-                          or report.get('three_tier_school_list') or report.get('aphorism_ending'))
+                          or report.get('three_tier_school_list') or report.get('aphorism_ending')
+                          or report.get('title_issues'))
     return report
 
 
@@ -217,11 +241,13 @@ def show(r):
         ex = ('；例：' + ' / '.join(v['examples'][:3])) if v['examples'] else ''
         bold = f"，其中加粗理念句里 {v['in_bold']} 次" if v.get('in_bold') is not None and v['count'] else ''
         lines.append(f"· {k}：{v['count']} 次{bold}（每万字 {v['per_10k']}，PH 基线 {v['ph_baseline_per_10k']}），{cap}{flag}{ex}")
-    for key, label in (('three_tier_school_list', '三层选校写法'), ('aphorism_ending', '结尾金句句式'),
+    for key, label in (('title_issues', '标题禁用写法'), ('three_tier_school_list', '三层选校写法'), ('aphorism_ending', '结尾金句句式'),
                        ('compliance', '合规禁用语'), ('ai_words', 'AI 高频 / 空心词'), ('self_praise', '自夸形容词'),
                        ('privacy', '隐私（邮箱 / 手机 / 长数字）'), ('overlap', '与参考文连续重合')):
         if key in r and r[key]:
             lines.append(f"· {label}：{'；'.join(map(str, r[key][:8]))}")
+    if r.get('title_colon'):
+        lines.append(f"· 标题有冒号：{r['title']}。确认不是冒号前后对称的命题句（titles-hooks.md）")
     if r['limited_words_over']:
         lines.append('· 限次词超限：' + '；'.join(f'{k} {v} 次' for k, v in r['limited_words_over'].items()))
     if r['genre'] in ('case', 'short') and r['you_in_editorial']:
