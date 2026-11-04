@@ -4,17 +4,17 @@
   "skills": {
     "case-story-writer": {
       "SKILL.md": "d84078d596021865b620a647d1d997de337454399e2cdc4f152e2e6ca5bee9a8",
-      "references/house-style.md": "2bea3d75b6f5c4f614e7dd16008ec1c7531bc205ec03f9ad19b037689ccba2e2",
+      "references/house-style.md": "e96d46f8d7712db99829c516822fb3f46f7cfdb46dd83561bc3abf22e8348dfe",
       "references/images.md": "962316cc93a6bd61616f907425798cc9c86436f63f18820513dd6f7127f01cbf",
       "references/intake-form.md": "42704e94d245521c9cb5746b1006fa8c7869badc379234b1581af45e02b193c7",
-      "references/learned-style.md": "5ce129887ff3c287e1fb40841036405ddacd0ebdee84a0348fa654e88b9678ca",
-      "references/quality-check.md": "8fdf1dd5d19f6de420fa4e048069d12548ba54bf556de8fe7e209c048857e0d9",
+      "references/learned-style.md": "e64a6021ececc097d16caed073f0b7fa09e531cc11beaee1238111a3867ab04c",
+      "references/quality-check.md": "8baa2a0f277f15afb8b9dc427e8b05e11028135dfed1b0ff219bc9f0b02162d3",
       "references/reference-cases.md": "98830a4ae44ce0200a2de7ecfa8fa3045ec5cb4a5b502ff52be0b2ac650aeb4e",
       "references/rewrite-mode.md": "3b9f7ae23a55c22f89f3e42ba9ced6adadc6fc747f9565ee9560fdfb171126ff",
       "references/service-trust.md": "c651029418a917a5a33db8512d4374fa288403649fb3484af6900a48743ac7c3",
       "references/structures.md": "436fe2a3a24d8eafd63fa4e466c611afe57e390d0ca949dc3994e52eefd3bd6b",
       "references/titles-hooks.md": "f949482b0023cadf2644f170d69bffa9ca5523d528ad6eedd19b76511bc4467a",
-      "references/web-page.md": "0961aadb5736941939d995f0f95ff544090b4c156feebf4dc1bb4a3b41464523"
+      "references/web-page.md": "4f55983019c1141db1f317f4d60ac6db5bccd6b2988dc3c35bc62ed6429d7c09"
     },
     "ivypath-humanize-zh": {
       "SKILL.md": "2d983c1fc879148f815ec74f02bc8b75a0b7e2b342f569369d2889c9231306a0"
@@ -24,7 +24,7 @@
     }
   },
   "claude_account": {
-    "case-story-writer": "96224b0f96bcc90be9a5050453fc4a2fc6cb8342cff057bc9c89609f5dbdf4cd",
+    "case-story-writer": "01ba14f19c62af6b5dd9c4d40188d0b7e70ca6a334850ba2e6891558b9697bb5",
     "ivypath-humanize-zh": "5425820eed48ffa9c9c98c3d2fccaf7f44075cc0067c66ed80bf7b62ccb7420a",
     "ivypath-case-imitation-training": "74d17650a17f15d09a64e8e254cdb396a61529b159853817e10d69bb9ec76b1a"
   },
