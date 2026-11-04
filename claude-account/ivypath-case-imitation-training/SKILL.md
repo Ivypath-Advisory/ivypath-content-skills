@@ -24,7 +24,7 @@ description: "IvyPath 市场实习生案例模仿训练：按本科学校、专�
 | 要用的规则 | 读哪里（仓库 `Ivypath-Advisory/ivypath-content-skills`） |
 |---|---|
 | 选案：外部案例目录、授权分级、匹配层级、打分 | `case-story-writer/references/reference-cases.md` |
-| 口吻、七段结构、选校课号深挖、结尾四步、句式限额 | `case-story-writer/references/house-style.md` |
+| 口吻、七段结构、选校课程深挖、结尾四步、句式限额 | `case-story-writer/references/house-style.md` |
 | 官网长页分节、四栏短页、SEO 标题 | `case-story-writer/references/web-page.md` |
 | 学员访谈体（批量篇）与每篇硬性下限 | `case-story-writer/references/structures.md` B 节 |
 | 改写外部稿：只继承事实、不继承表达 | `case-story-writer/references/rewrite-mode.md` |
@@ -67,7 +67,7 @@ description: "IvyPath 市场实习生案例模仿训练：按本科学校、专�
 4. **练习任务**：给实习生 3–5 个可以检查的任务，例如：
    - 把「02 问题诊断」改成自己的话（150–250 字），三个事实点不能丢；
    - 找出初改稿里你觉得还像 AI 写的 2 句，改掉并说明理由；
-   - 去入读项目的官网找 4 门课，写成课号卡片（课号 + 课名 + 一句话说明涉及什么），附官网链接；
+   - 去入读项目的官网找 4 门课，写成课程卡片（英文课名 + 中文意译 + 一句话说明涉及什么），课号和官网链接写在卡片下方的出处里，不进正文；
    - 给每个录取填海报信息表（images.md 2b）；
    - 列出写这篇需要向后端要的 5 样素材，并写明在系统哪里找（intake-form.md 第九节）；
    - 写 SEO 标题和 meta description（不超过 80 字）。
