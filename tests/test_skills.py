@@ -172,6 +172,12 @@ class LintTests(unittest.TestCase):
         self.assertFalse(ok['title_colon'])
         self.assertFalse(ok['fail'])
 
+    def test_meiyou_ershi_cap(self):
+        one = lint.lint('我们没有急着让她多投几家，而是先排实习。', 'case')
+        self.assertNotIn('没有…而是', one['over_cap'])
+        two = lint.lint('他没有把耶鲁划掉，而是排进了规划。我们没有让她补课，而是放在实习上。', 'case')
+        self.assertIn('没有…而是', two['over_cap'])
+
     def test_section_label_headings(self):
         bad = lint.lint('# 7 个录取，耶鲁是最后到的\n\n### 01 起点：和家人去纽约见顾问\n\n正文。\n\n## 文书：环保经历写成 ESG\n\n正文。', 'case')
         self.assertEqual(len(bad['section_labels']), 2)
