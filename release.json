@@ -4,10 +4,10 @@
   "skills": {
     "case-story-writer": {
       "SKILL.md": "449efcd1169f28fc6d36a1fccc98e7c9df515675f91abf97954b2cb831152b87",
-      "references/house-style.md": "485d3f2c71bb097334ef046408173c455fee00cb628b29701ef1fa799026973c",
+      "references/house-style.md": "34707d7a794994c0dd1e46fef9a05e5a040c36cc8290082c9c2a3a094fcb2300",
       "references/images.md": "962316cc93a6bd61616f907425798cc9c86436f63f18820513dd6f7127f01cbf",
       "references/intake-form.md": "42704e94d245521c9cb5746b1006fa8c7869badc379234b1581af45e02b193c7",
-      "references/learned-style.md": "15938c75e96f879aff47b233467f1070c68484bf158ea96308942a5111c58925",
+      "references/learned-style.md": "d4b2d984173c1c267a6c9a02ccb8134f95acc651f8324d800122e6bf27ba48ce",
       "references/quality-check.md": "8e364e36f42033a695dc255821b477cd27a2aa62275de8ef4e8de101957b56b4",
       "references/reference-cases.md": "98830a4ae44ce0200a2de7ecfa8fa3045ec5cb4a5b502ff52be0b2ac650aeb4e",
       "references/rewrite-mode.md": "3b9f7ae23a55c22f89f3e42ba9ced6adadc6fc747f9565ee9560fdfb171126ff",
@@ -24,7 +24,7 @@
     }
   },
   "claude_account": {
-    "case-story-writer": "dd5a47163607942cef5baaf03851fdf37103d5779decc968490ecb4c51c55132",
+    "case-story-writer": "79c69b40c729b6b40a8bb8195ccad02cc221a440f9ad4ccd4c72cc103fd38a22",
     "ivypath-humanize-zh": "e1bb21777b5c2c7dc305e2d22e6f8e71942f73aec07b997b405a5e86df3967c1",
     "ivypath-case-imitation-training": "a85690063a3940c4cd4ca4d1647b3cb9a9aa7c23c8c015127b6892e3e1709f6d"
   },

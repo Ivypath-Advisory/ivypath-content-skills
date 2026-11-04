@@ -176,7 +176,7 @@ class LintTests(unittest.TestCase):
         bad = lint.lint('# 7 个录取，耶鲁是最后到的\n\n### 01 起点：和家人去纽约见顾问\n\n正文。\n\n## 文书：环保经历写成 ESG\n\n正文。', 'case')
         self.assertEqual(len(bad['section_labels']), 2)
         self.assertTrue(bad['fail'])
-        ok = lint.lint('# 7 个录取，耶鲁是最后到的\n\n### 01 选校名单上出现了耶鲁，她和家人都没想到\n\n**副题**：一句事实。\n\n### 02 没修过线代，申耶鲁是不是想多了？\n\n正文。', 'case')
+        ok = lint.lint('# 7 个录取，耶鲁是最后到的\n\n### 01 看到名单上有耶鲁，她有点意外\n\n**副题**：一句事实。\n\n### 02 没修过线代，真能申耶鲁吗？\n\n正文。', 'case')
         self.assertEqual(ok['section_labels'], [])
 
     def test_cli_exit_codes(self):
